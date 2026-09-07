@@ -1,0 +1,11 @@
+{
+  "message_id": "ZONA-INVERNADERO-01-000125",
+  "device_id": "ZONA-INVERNADERO-01",
+  "timestamp": "2026-09-06T18:30:00Z",
+  "sequence": 125,
+  "measurements": {
+    "soil_moisture": 45.0,
+    "temperature": 22.6,
+    "water_level": 30.0
+  }
+}
