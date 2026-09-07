@@ -1,0 +1,53 @@
+{
+  "device_id": "ZONA-INVERNADERO-01",
+  "interval_seconds": 15,
+  "scenario": "normal",
+  "seed": 42,
+  "variables": [
+    {
+      "name": "soil_moisture",
+      "label": "Humedad del Suelo",
+      "type": "number",
+      "unit": "%",
+      "initial": 45.0,
+      "simulation_min": 10.0,
+      "simulation_max": 90.0,
+      "valid_min": 0.0,
+      "valid_max": 100.0,
+      "max_variation": 2.0,
+      "decimals": 1,
+      "enabled": true,
+      "alert_rule": {"operator": "<", "value": 20.0}
+    },
+    {
+      "name": "temperature",
+      "label": "Temperatura",
+      "type": "number",
+      "unit": "°C",
+      "initial": 22.0,
+      "simulation_min": 15.0,
+      "simulation_max": 35.0,
+      "valid_min": -10.0,
+      "valid_max": 60.0,
+      "max_variation": 0.5,
+      "decimals": 1,
+      "enabled": true,
+      "alert_rule": {"operator": ">", "value": 30.0}
+    },
+    {
+      "name": "water_level",
+      "label": "Nivel de Agua",
+      "type": "number",
+      "unit": "cm",
+      "initial": 30.0,
+      "simulation_min": 2.0,
+      "simulation_max": 48.0,
+      "valid_min": 0.0,
+      "valid_max": 50.0,
+      "max_variation": 1.0,
+      "decimals": 1,
+      "enabled": true,
+      "alert_rule": {"operator": "<", "value": 5.0}
+    }
+  ]
+}
