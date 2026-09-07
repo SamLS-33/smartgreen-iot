@@ -1,0 +1,46 @@
+{
+  "description": "Casos de prueba con errores para validar contratos de telemetria",
+  "invalid_cases": [
+    {
+      "error_type": "Falta campo obligatorio (device_id)",
+      "payload": {
+        "message_id": "ZONA-INVERNADERO-01-000126",
+        "timestamp": "2026-09-06T18:30:15Z",
+        "sequence": 126,
+        "measurements": {
+          "soil_moisture": 45.0,
+          "temperature": 22.0,
+          "water_level": 30.0
+        }
+      }
+    },
+    {
+      "error_type": "Tipo de dato incorrecto en sequence (string en vez de número)",
+      "payload": {
+        "message_id": "ZONA-INVERNADERO-01-000127",
+        "device_id": "ZONA-INVERNADERO-01",
+        "timestamp": "2026-09-06T18:30:30Z",
+        "sequence": "ciento-veintisiete",
+        "measurements": {
+          "soil_moisture": 45.0,
+          "temperature": 22.0,
+          "water_level": 30.0
+        }
+      }
+    },
+    {
+      "error_type": "Valor fuera de rango válido en soil_moisture (150%)",
+      "payload": {
+        "message_id": "ZONA-INVERNADERO-01-000128",
+        "device_id": "ZONA-INVERNADERO-01",
+        "timestamp": "2026-09-06T18:30:45Z",
+        "sequence": 128,
+        "measurements": {
+          "soil_moisture": 150.0,
+          "temperature": 22.0,
+          "water_level": 30.0
+        }
+      }
+    }
+  ]
+}
