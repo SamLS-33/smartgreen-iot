@@ -1,0 +1,20 @@
+{
+  "device_id": "ZONA-INVERNADERO-01",
+  "interval_seconds": 15,
+  "scenario": "normal",
+  "seed": 42,
+  "http_url": "http://localhost:8000/api/telemetry",
+  "http_retries": 3,
+  "max_messages": 0,
+  "soil_moisture_initial": 25.0,
+  "temperature_initial": 32.0,
+  "water_level_initial": 20.0,
+  "soil_dry_step_min": 0.5,
+  "soil_dry_step_max": 2.0,
+  "temperature_step": 0.8,
+  "irrigation_threshold": 30.0,
+  "irrigation_gain": 8.0,
+  "water_consumption": 1.5,
+  "alert_soil_moisture": 20.0,
+  "alert_water_level": 5.0
+}
