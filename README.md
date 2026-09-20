@@ -22,3 +22,19 @@ El proyecto se encuentra organizado bajo la siguiente estructura modular:
 * `simulator/config/`: Contiene los archivos de configuración JSON del comportamiento del dispositivo simulado.
 * `contracts/examples/`: Ejemplos formales de los contratos de telemetría (mensajes válidos y casos de prueba para validación de errores).
 * `docs/variables/`: Documentación detallada y fichas técnicas de las variables del sistema.
+
+---
+
+## 🚀 Guía de Instalación y Ejecución del Simulador
+
+Si quieres poner a prueba el simulador del invernadero de forma local o enviando solicitudes HTTP, sigue estos pasos:
+
+### 1. Requisitos previos
+* Tener instalado **Python 3.x** en tu equipo.
+
+### 2. Ejecución local sin red (Modo Consola)
+Para ver la generación de tramas de telemetría directamente en la terminal sin necesidad de levantar un servidor externo, entra a la carpeta del simulador y ejecuta:
+
+```bash
+cd simulator
+python simulator.py --console --count 5
