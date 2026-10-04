@@ -1,7 +1,7 @@
 {
   "device_id": "ZONA-INVERNADERO-01",
   "interval_seconds": 15,
-  "scenario": "normal",
+  "scenario": "alert",
   "seed": 42,
   "http_url": "http://localhost:8000/api/telemetry",
   "http_retries": 3,
