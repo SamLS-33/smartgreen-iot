@@ -1,43 +1,290 @@
 # SmartGreen IoT
+
 ## Sistema Inteligente de Monitoreo y Riego Automatizado para Invernaderos Caseros
 
-Proyecto Integrador IoT - Ingeniería de Sistemas  
-**Universidad de San Buenaventura, Bogotá D.C.**  
+SmartGreen IoT es un proyecto orientado al monitoreo de variables ambientales en un invernadero casero mediante un dispositivo IoT simulado por software.
 
-* **Integrantes:** Brandon González, Samuel Botache  
-* **Asignatura:** Desarrollo de Aplicaciones AV  
+El proyecto busca representar el comportamiento de un sistema de monitoreo y riego automatizado, generando datos de humedad del suelo, temperatura y nivel de agua. La información generada se estructura en mensajes JSON y puede enviarse mediante HTTP a un receptor.
 
----
-
-##  Descripción del Proyecto
-**SmartGreen IoT** es una solución tecnológica diseñada para optimizar el control microclimático e hídrico en invernaderos caseros y urbanos. El sistema monitorea en tiempo real variables críticas para el cultivo mediante dispositivos IoT simulados, permitiendo una supervisión constante y la generación de alertas tempranas ante situaciones de estrés hídrico o térmico.
-
-##  Variables Monitoreadas
-1. **Humedad del Suelo (`soil_moisture`):** Porcentaje de humedad volumétrica (`%`). Genera alerta crítica si desciende del umbral de sequía.
-2. **Temperatura Ambiental (`temperature`):** Registro térmico interior en grados Celsius (`°C`). Controla los límites de estrés térmico para los cultivos.
-3. **Nivel de Agua (`water_level`):** Altura de la columna de agua disponible en el tanque de reserva (`cm`). Emite alertas de nivel insuficiente para el sistema de riego.
-
-##  Estructura del Repositorio
-El proyecto se encuentra organizado bajo la siguiente estructura modular:
-* `simulator/config/`: Contiene los archivos de configuración JSON del comportamiento del dispositivo simulado.
-* `contracts/examples/`: Ejemplos formales de los contratos de telemetría (mensajes válidos y casos de prueba para validación de errores).
-* `docs/variables/`: Documentación detallada y fichas técnicas de las variables del sistema.
+Actualmente, el proyecto se encuentra en la etapa de desarrollo y validación del simulador IoT.
 
 ---
 
-##  Guía de Instalación y Ejecución del Simulador
+## Objetivo
 
-Si quieres poner a prueba el simulador del invernadero de forma local o enviando solicitudes HTTP, sigue estos pasos:
+Desarrollar un sistema capaz de simular un dispositivo IoT encargado de monitorear las condiciones de un invernadero y representar decisiones básicas de riego a partir de las variables generadas.
 
-### 1. Requisitos previos
-* Tener instalado **Python 3.10+** en tu equipo.
+El simulador permite:
 
-### 2. Ejecución local sin red (Modo Consola)
-Para ver la generación de tramas de telemetría directamente en la terminal sin necesidad de levantar un servidor externo, entra a la carpeta del simulador y abre dos terminales y ejecuta el primero y luego el segundo:
+* Generar lecturas ambientales de manera consecutiva.
+* Mantener un estado interno para las variables simuladas.
+* Representar la activación y desactivación del riego.
+* Generar mensajes con una estructura JSON definida.
+* Ejecutar escenarios normales y de alerta.
+* Enviar la telemetría mediante solicitudes HTTP POST.
+* Validar el comportamiento mediante pruebas automatizadas.
 
-```bash
-cd simulator
+---
+
+## Variables simuladas
+
+El dispositivo simulado trabaja principalmente con las siguientes variables:
+
+| Variable            | Descripción                                        |
+| ------------------- | -------------------------------------------------- |
+| `soil_moisture`     | Porcentaje de humedad del suelo.                   |
+| `temperature`       | Temperatura del invernadero en grados Celsius.     |
+| `water_level`       | Nivel disponible de agua.                          |
+| `irrigation_active` | Indica si el sistema de riego se encuentra activo. |
+
+Además, cada mensaje contiene información de identificación y seguimiento:
+
+| Campo          | Descripción                             |
+| -------------- | --------------------------------------- |
+| `message_id`   | Identificador único del mensaje.        |
+| `device_id`    | Identificador del dispositivo IoT.      |
+| `timestamp`    | Fecha y hora de generación del mensaje. |
+| `sequence`     | Número consecutivo de la lectura.       |
+| `measurements` | Conjunto de variables medidas.          |
+
+---
+
+## Lógica del simulador
+
+El simulador mantiene el estado de las variables entre lecturas.
+
+En el escenario normal, el sistema evalúa principalmente la humedad del suelo y el nivel de agua disponible.
+
+Cuando la humedad del suelo se encuentra por debajo del umbral configurado y existe suficiente agua, el riego se activa. Al activarse:
+
+* La humedad del suelo aumenta.
+* El nivel de agua disminuye.
+* `irrigation_active` toma el valor `true`.
+
+Cuando no se cumplen las condiciones para activar el riego, la humedad del suelo puede disminuir progresivamente.
+
+Esta lógica permite comprobar la coherencia entre las variables generadas y el comportamiento esperado del sistema.
+
+---
+
+## Escenarios
+
+### Escenario normal
+
+Representa el comportamiento habitual del invernadero.
+
+```json
+"scenario": "normal"
+```
+
+En este escenario las variables evolucionan de acuerdo con las reglas configuradas para el simulador.
+
+### Escenario de alerta
+
+Permite provocar intencionalmente una condición crítica de humedad del suelo para comprobar el comportamiento del simulador ante una situación de alerta.
+
+```json
+"scenario": "alert"
+```
+
+Este escenario permite generar valores de humedad inferiores al umbral establecido.
+
+---
+
+## Estructura del proyecto
+
+```text
+smartgreen-iot/
+├── README.md
+├── contracts/
+│   └── examples/
+│       ├── invalid-messages.json
+│       └── valid-message.json
+├── docs/
+│   └── variables/
+│       └── ficha-variables.md
+└── simulator/
+    ├── config.json
+    ├── device-config.json
+    ├── receiver_test.py
+    ├── simulator.py
+    └── tests/
+        └── test_simulator.py
+```
+
+### Descripción de los directorios
+
+`contracts/`
+Contiene ejemplos de mensajes válidos e inválidos utilizados como referencia para el contrato de telemetría.
+
+`docs/`
+Contiene documentación relacionada con las variables utilizadas por el proyecto.
+
+`simulator/`
+Contiene el simulador IoT, su configuración, el receptor HTTP de prueba y las pruebas automatizadas.
+
+`simulator/tests/`
+Contiene las pruebas automatizadas del comportamiento del simulador.
+
+---
+
+## Configuración
+
+La configuración utilizada actualmente por `simulator.py` se encuentra en:
+
+```text
+simulator/config.json
+```
+
+Algunos de los parámetros principales son:
+
+```json
+{
+  "device_id": "ZONA-INVERNADERO-01",
+  "interval_seconds": 15,
+  "scenario": "normal",
+  "seed": 42,
+  "http_url": "http://localhost:8000/api/telemetry"
+}
+```
+
+También se configuran los valores iniciales de humedad, temperatura y nivel de agua, además de los parámetros relacionados con el comportamiento del riego.
+
+---
+
+## Ejecución
+
+Para ejecutar el simulador desde la carpeta `simulator`:
+
+```powershell
 python simulator.py --console --count 5
+```
 
-cd simulator
+El parámetro `--console` permite visualizar las lecturas sin realizar el envío HTTP.
+
+El parámetro `--count` permite indicar la cantidad de mensajes que se desean generar.
+
+También es posible ejecutar el simulador enviando las lecturas al receptor HTTP:
+
+```powershell
+python simulator.py --count 1
+```
+
+---
+
+## Ejemplo de telemetría
+
+Una lectura generada por el simulador tiene una estructura similar a:
+
+```json
+{
+  "message_id": "ZONA-INVERNADERO-01-000001",
+  "device_id": "ZONA-INVERNADERO-01",
+  "timestamp": "2026-10-04T18:34:42Z",
+  "sequence": 1,
+  "measurements": {
+    "soil_moisture": 33.0,
+    "temperature": 32.2,
+    "water_level": 18.5,
+    "irrigation_active": true
+  }
+}
+```
+
+El `message_id` identifica cada mensaje y la secuencia permite diferenciar las lecturas generadas por el dispositivo.
+
+---
+
+## Pruebas automatizadas
+
+El proyecto cuenta con pruebas automatizadas para verificar diferentes aspectos del simulador.
+
+Para ejecutarlas:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+Actualmente se validan:
+
+* Rangos de las variables.
+* Generación de identificadores diferentes.
+* Coherencia del comportamiento del riego.
+* Prevención del riego cuando no existe suficiente agua.
+* Correspondencia entre el estado del riego y las variables generadas.
+
+Resultado actual:
+
+```text
+Ran 5 tests in 1.507s
+
+OK
+```
+
+---
+
+## Comunicación HTTP
+
+El simulador puede enviar las lecturas mediante una solicitud HTTP `POST`.
+
+La dirección configurada actualmente es:
+
+```text
+http://localhost:8000/api/telemetry
+```
+
+Para realizar una prueba se puede iniciar primero el receptor:
+
+```powershell
 python receiver_test.py
+```
+
+En otra terminal se ejecuta:
+
+```powershell
+python simulator.py --count 1
+```
+
+Cuando el envío es recibido correctamente, el simulador muestra una respuesta HTTP `201`.
+
+El receptor de prueba también muestra el mensaje JSON recibido.
+
+---
+
+## Tecnologías utilizadas
+
+* Python
+* JSON
+* HTTP
+* `unittest`
+* Git
+* GitHub
+
+---
+
+## Estado actual
+
+El simulador IoT cuenta actualmente con:
+
+* Generación de telemetría.
+* Identificación mediante `device_id` y `message_id`.
+* Secuencia de mensajes.
+* Variables de humedad, temperatura y nivel de agua.
+* Lógica básica de riego.
+* Escenario normal.
+* Escenario de alerta.
+* Pruebas automatizadas.
+* Envío de telemetría mediante HTTP.
+* Receptor HTTP local para pruebas.
+
+Las siguientes etapas del proyecto contemplan el desarrollo del backend, la persistencia de datos y las funcionalidades posteriores definidas para el sistema.
+
+---
+
+## Proyecto
+
+**SmartGreen IoT**
+
+Sistema Inteligente de Monitoreo y Riego Automatizado para Invernaderos Caseros.
+
+Desarrollado como proyecto académico de Ingeniería de Sistemas.
