@@ -40,6 +40,7 @@ class TestSmartGreen(unittest.TestCase):
     def test_irrigation_coherence(self):
         """El riego debe aumentar humedad y disminuir agua."""
         config = dict(self.c)
+        config["scenario"] = "normal"
         config["soil_moisture_initial"] = 10
         config["water_level_initial"] = 20
 

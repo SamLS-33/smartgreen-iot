@@ -3,7 +3,7 @@
   "interval_seconds": 15,
   "scenario": "alert",
   "seed": 42,
-  "http_url": "http://localhost:8000/api/telemetry",
+  "http_url": "http://127.0.0.1:8000/api/telemetry",
   "http_retries": 3,
   "max_messages": 0,
   "soil_moisture_initial": 25.0,
